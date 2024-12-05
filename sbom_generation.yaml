@@ -26,6 +26,10 @@ steps:
       cd /node/node-v16.14.2-linux-x64/lib/node_modules/@cyclonedx/cdxgen && \
       npm install cheerio@v1.0.0-rc.12
   - type: Command
+    name: "Install setuptools"
+    command: |
+      python3 -m pip install setuptools
+  - type: Command
     name: "Generate SBOM for Python "
     command: |
       # Search the test or dev requirements files, so that test and dev py packages can be excluded in the generated SBOM
