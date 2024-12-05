@@ -9,6 +9,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      PYTHONPATH: ./ai-speech-realtime-sdk-python/src
+
     steps:
       # Step 1: Check out the code
       - name: Checkout code
