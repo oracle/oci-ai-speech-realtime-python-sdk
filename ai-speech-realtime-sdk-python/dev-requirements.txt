@@ -1,0 +1,8 @@
+#This file is used only for local development
+oci>=2.130.0
+websockets>=11.0.3
+
+pytest~=8.3.3
+pytest-asyncio~=0.24.0
+
+pytest-cov~=6.0.0
