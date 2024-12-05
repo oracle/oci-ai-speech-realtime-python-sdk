@@ -36,11 +36,9 @@ steps:
       files=$(find . -type f -regex ".*\(test.*requirements\|requirements.*test\|dev.*requirements\|requirements.*dev\).*\.txt") && \
       if [ -n "$files" ]; then \
         cdxgen -t python -o artifactSBOM.json --spec-version 1.4 \
-        --exclude "*{requirements,dev,test}*{requirements,dev,test}*.txt" --project-name "$(basename $OCI_PRIMARY_SOURCE_URL)" --no-recurse && \
-        mv artifactSBOM.json ${OCI_PRIMARY_SOURCE_DIR}/artifactSBOM.json; \
+        --exclude "*{requirements,dev,test}*{requirements,dev,test}*.txt" --project-name "$(basename $OCI_PRIMARY_SOURCE_URL)" --no-recurse
       else \
-         cdxgen -t python -o artifactSBOM.json --spec-version 1.4 --project-name "$(basename $OCI_PRIMARY_SOURCE_URL)" --no-recurse && \
-         mv artifactSBOM.json ${OCI_PRIMARY_SOURCE_DIR}/artifactSBOM.json; \
+         cdxgen -t python -o artifactSBOM.json --spec-version 1.4 --project-name "$(basename $OCI_PRIMARY_SOURCE_URL)" --no-recurse
       fi \
 outputArtifacts:
   - name: artifactSBOM
