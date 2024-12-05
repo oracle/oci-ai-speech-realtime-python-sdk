@@ -32,6 +32,5 @@ jobs:
       # Step 4: Run tests
       - name: Run unit tests
         run: |
-          cd ai-speech-realtime-sdk-python
-          pytest tests/ --disable-warnings
+          pytest ai-speech-realtime-sdk-python/tests/ --disable-warnings
         continue-on-error: false  # Fail the job if tests fail
