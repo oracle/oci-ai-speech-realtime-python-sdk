@@ -1,0 +1,4 @@
+#This is just for running/testing the example, not for the realtime speech SDK itself.
+
+../ #There is a setup.py file in the parent directory
+PyAudio>=0.2.14

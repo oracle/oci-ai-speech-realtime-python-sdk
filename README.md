@@ -1,20 +1,41 @@
-*This repository acts as a template for all of Oracle’s GitHub repositories. It contains information about the guidelines for those repositories. All files and sections contained in this template are mandatory, and a GitHub app ensures alignment with these guidelines. To get started with a new repository, replace the italic paragraphs with the respective text for your project.*
+# Oracle Cloud Infrastructure Realtime Speech Python SDK
 
-# Project name
+## About
 
-*Describe your project's features, functionality and target audience*
+This repository contains the source code for the Python SDK to connect to the Realtime Speech Service. There is also an example client to help with connecting to the service. \
+This SDK is based on the popular [websockets](https://github.com/python-websockets/websockets) python library.
 
 ## Installation
 
-*Provide detailed step-by-step installation instructions. You can name this section **How to Run** or **Getting Started** instead of **Installation** if that's more acceptable for your project*
+It is highly recommended that a Python virtual environment be used when installing the OCI Realtime Speech Python SDK. 
+Once your virtual environment is active, the SDK can be installed using pip. Do the following for installation:
+
+```bash
+pip install oci-ai-speech-realtime
+```
+
+## Development
+Follow the instructions in the [Development Readme](ai-speech-realtime-sdk-python/README.md) to get started with local development/testing of the SDK code. 
 
 ## Documentation
 
-*Developer-oriented documentation can be published on GitHub, but all product documentation must be published on <https://docs.oracle.com>*
+The home page for the OCI Speech Service can be found [here](https://www.oracle.com/artificial-intelligence/speech/).
+The API reference for OCI Speech Service can be found [here](https://docs.oracle.com/en-us/iaas/api/#/en/speech/latest/).
+
+Note that realtime speech URLs are distinct from the speech URLs mentioned in the above link. To obtain a realtime speech url, take a speech url, and replace 'speech' with realtime. Also replace https with wss. 
+
+For example, for the following speech url:
+
+```https://speech.aiservice.af-johannesburg-1.oci.oraclecloud.com```
+
+This is the corresponding realtime speech URL:
+
+```wss://realtime.aiservice.af-johannesburg-1.oci.oraclecloud.com```
+
 
 ## Examples
 
-*Describe any included examples or provide a link to a demo/tutorial*
+We have an example here itself, it can be found in the [example-client](example-client/) directory.
 
 ## Help
 
@@ -32,13 +53,7 @@ Please consult the [security guide](./SECURITY.md) for our responsible security 
 
 ## License
 
-*The correct copyright notice format for both documentation and software is*
-    "Copyright (c) [year,] year Oracle and/or its affiliates."
-*You must include the year the content was first released (on any platform) and the most recent year in which it was revised*
-
-Copyright (c) 2023 Oracle and/or its affiliates.
-
-*Replace this statement if your project is not licensed under the UPL*
+Copyright (c) 2024 Oracle and/or its affiliates.
 
 Released under the Universal Permissive License v1.0 as shown at
 <https://oss.oracle.com/licenses/upl/>.
