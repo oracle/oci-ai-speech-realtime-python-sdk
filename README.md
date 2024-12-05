@@ -37,10 +37,6 @@ This is the corresponding realtime speech URL:
 
 We have an example here itself, it can be found in the [example-client](example-client/) directory.
 
-## Help
-
-*Inform users on where to get help or how to receive official support from Oracle (if applicable)*
-
 ## Contributing
 
 *If your project has specific contribution requirements, update the CONTRIBUTING.md file to ensure those requirements are clearly explained*
