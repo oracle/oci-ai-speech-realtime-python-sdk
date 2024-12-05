@@ -11,7 +11,7 @@ __version__ = os.environ.get("PKG_VERSION", "0.0.1")
 VERSION = __version__.replace("-", "+", 1).replace("-", "", 1)
 
 requires = [
-    "oci>=2.130.0", # or oci~=2.130
+    "oci>=2.130.0",
     'websockets>=11.0.3; python_version >= "3.7"'
 ]
 
