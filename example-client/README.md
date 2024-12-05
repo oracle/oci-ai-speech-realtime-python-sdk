@@ -16,15 +16,17 @@ Do the following from the current directory
    ```bash
    pip install ../ai-speech-realtime-sdk-python
    ```
-2. Make sure you're using the right compartment, region, etc in `RealtimeClient.py`
+2. Make sure you're using the right compartment, region, etc in `RealtimeClientExample.py`
 
 ## Usage
 
 Run Python File →
    ```bash
-   python3 src/RealtimeClient.py -c <compartment-id> -r <region>
+   python3 src/RealtimeClientExample.py -c <compartment-id> -r <region>
    ```
-In RealtimeClient.py,
+If you prefer having your own event loop (not recommended), you can consider `RealtimeClientExampleEventLoop.py`
+
+In RealtimeClientExample.py,
    We have parameters like SAMPLE_RATE, FORMAT, CHANNELS, BUFFER_DURATION_MS. These define audio parameters. For now, we only support mono (single-channel) audio.  
 
    The **authenticator()** method is used to create the signer object used for authentication. You can choose a different method (config file, instance principals, etc) as per your use case.

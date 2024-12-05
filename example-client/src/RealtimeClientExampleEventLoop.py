@@ -22,6 +22,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 # Create a logger for this module
 logger = logging.getLogger(__name__)
 
+loop = asyncio.get_event_loop()
 # Create a FIFO queue
 queue = asyncio.Queue()
 
@@ -99,7 +100,7 @@ def get_realtime_parameters(customizations, compartment_id):
     realtime_speech_parameters.partial_silence_threshold_in_ms = 0
     realtime_speech_parameters.final_silence_threshold_in_ms = 2000
     
-    #realtime_speech_parameters.encoding=f"audio/raw;rate={SAMPLE_RATE}"
+    realtime_speech_parameters.encoding=f"audio/raw;rate={SAMPLE_RATE}" #Default=16000 Hz
     realtime_speech_parameters.should_ignore_invalid_customizations = False
     realtime_speech_parameters.stabilize_partial_results = (
         realtime_speech_parameters.STABILIZE_PARTIAL_RESULTS_NONE
@@ -141,6 +142,9 @@ class MyListener(RealtimeSpeechClientListener):
 
     def on_error(self, error_message):
         return super().on_error(error_message)
+    
+    def on_close(self, error_code, error_message):
+        print(f"Closed due to error code {error_code}:{error_message}")
 
 async def start_realtime_session(customizations = [], compartment_id = None, region = None):
     def message_callback(message):
@@ -160,24 +164,19 @@ async def start_realtime_session(customizations = [], compartment_id = None, reg
         compartment_id=compartment_id,
     )
 
-    #loop = asyncio.get_event_loop()
-    #loop.create_task(send_audio(client))
-    #loop.run_until_complete(client.connect())
-
-    #asyncio.create_task(send_audio(client))
-    #asyncio.run(client.connect())
-
     #example close condition
     async def close_after_a_while(realtime_speech_client, session_duration_seconds):
         if session_duration_seconds >= 0:
             await asyncio.sleep(session_duration_seconds)
             realtime_speech_client.close()
+    
+    #asyncio.create_task(send_audio(client))
+    
+    #asyncio.create_task(close_after_a_while(client, SESSION_DURATION))
 
-    
-    
-    asyncio.create_task(send_audio(client))
-    
-    asyncio.create_task(close_after_a_while(client, SESSION_DURATION))
+    loop = asyncio.get_running_loop()
+    loop.create_task(send_audio(client))
+    loop.create_task(close_after_a_while(client, SESSION_DURATION))
     
     await client.connect()
 
@@ -210,4 +209,4 @@ if __name__ == "__main__":
 
     customization_ids = []
 
-    asyncio.run(start_realtime_session(customizations = customization_ids, compartment_id = args.compartment_id, region = args.region))
+    loop.run_until_complete(start_realtime_session(customizations = customization_ids, compartment_id = args.compartment_id, region = args.region))

@@ -173,7 +173,6 @@ class RealtimeSpeechClient:
         while not self.close_flag:
             try:
                 message = json.loads(await asyncio.wait_for(ws.recv(), timeout=0.1))
-                print("message received")
                 if self.listener:
                     if message["event"] == RealtimeMessage.EVENT_RESULT:
                         self.listener.on_result(message)
@@ -190,7 +189,8 @@ class RealtimeSpeechClient:
                 self.on_close(e.code, e.reason)
 
     def close(self):
-        logger.info("Closing now")
+        logger.info("Client has initiated closure")
+        self.listener.on_close(1000, "Closure Initiated by Client")
         self.close_flag = True
         self.connection = None
 
