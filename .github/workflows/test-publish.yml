@@ -50,8 +50,7 @@ jobs:
 
     - name: Publish to TestPyPI
       if: startsWith(github.ref, 'refs/tags/v')
-      run: |
-        python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+      uses: pypa/gh-action-pypi-publish@release/v1
       #env:
       #  name: testpypi
       #  url: https://test.pypi.org/p/oci-ai-speech-realtime/  # Replace <package-name> with your PyPI project name
