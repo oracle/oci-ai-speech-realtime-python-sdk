@@ -31,6 +31,8 @@ jobs:
         pip install -r ai-speech-realtime-sdk-python/dev-requirements.txt
 
     - name: Run Unit Tests
+      env:
+        PYTHONPATH: ./ai-speech-realtime-sdk-python/src
       run: |
         pytest ai-speech-realtime-sdk-python/tests/ --disable-warnings
     
