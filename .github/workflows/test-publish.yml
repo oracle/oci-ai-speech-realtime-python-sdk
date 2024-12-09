@@ -44,7 +44,7 @@ jobs:
     #Build using the version in the tag
     - name: Build the package
       env:
-        VERSION: ${{ env.VERSION }}
+        PKG_VERSION: ${{ env.VERSION }}
       run: |
         echo "VERSION=${{ env.VERSION }}"
         python -m build
