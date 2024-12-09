@@ -39,7 +39,7 @@ jobs:
         
     - name: Extract version from tag
       id: extract_version
-      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" | sed 's/-test//' >> $GITHUB_ENV
     
     #Build using the version in the tag
     - name: Build the package
