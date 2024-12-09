@@ -1,9 +1,9 @@
-name: Publish Python Package to Test PyPI
+name: Publish Python Package to PyPI
 
 on:
   push:
     tags:
-      - 'v*-test'
+      - 'v*'
 
 
 permissions:
@@ -13,8 +13,17 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    
+
     steps:
+    - name: Check if tag ends with "-test"
+
+      run: |
+        if [[ "${{ github.ref }}" == *-test ]]; then
+        echo "Tag ends with '-test'. This cannot be released to PyPi, check the test-PyPi action. Terminating job."
+        exit 1
+        fi
+      shell: bash
+
     - name: Checkout code
       uses: actions/checkout@v3
 
@@ -29,18 +38,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install setuptools wheel twine build
         pip install -r ai-speech-realtime-sdk-python/dev-requirements.txt
-
     - name: Run Unit Tests
       env:
         PYTHONPATH: ./ai-speech-realtime-sdk-python/src
       run: |
         pytest ai-speech-realtime-sdk-python/tests/ --disable-warnings
     
-        
+
     - name: Extract version from tag
       id: extract_version
       run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
-    
+
     #Build using the version in the tag
     - name: Build the package
       env:
@@ -48,15 +56,14 @@ jobs:
       run: |
         echo "VERSION=${{ env.VERSION }}"
         python -m build
-
-    - name: Publish to TestPyPI
+    - name: Publish to PyPI
       if: startsWith(github.ref, 'refs/tags/v')
       run: |
-        python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+        python -m twine upload dist/*
       env:
         TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.TEST_PYPI_TOKEN }}
-      
+        TWINE_PASSWORD: ${{ secrets.RELEASE_PYPI_TOKEN }}
+
         #env:
       #  name: testpypi
       #  url: https://test.pypi.org/p/oci-ai-speech-realtime/  # Replace <package-name> with your PyPI project name
