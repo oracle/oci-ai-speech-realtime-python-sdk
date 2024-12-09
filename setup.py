@@ -12,7 +12,7 @@ VERSION = __version__.replace("-", "+", 1).replace("-", "", 1)
 
 requires = [
     "oci>=2.130.0",
-    'websockets>=11.0.3; python_version >= "3.7"'
+    'websockets>=11.0.3'
 ]
 
 setup(
