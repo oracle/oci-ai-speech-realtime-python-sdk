@@ -3,7 +3,7 @@ name: Publish Python Package to Test PyPI
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*-test'
 
 
 permissions:
@@ -13,8 +13,17 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
-
+    
     steps:
+    - name: Check if tag ends with "-test"
+    
+      run: |
+        if [[ "${{ github.ref }}" == *-test ]]; then
+        echo "Tag ends with '-test'. Terminating job."
+        exit 1
+        fi
+      shell: bash
+
     - name: Checkout code
       uses: actions/checkout@v3
 
