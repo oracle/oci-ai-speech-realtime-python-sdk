@@ -19,7 +19,7 @@ Copyright 2019 Kenneth Reitz
 
 ======================== Third Party Components ========================
 oci
-* Copyright (c) 2016, 2024, Oracle and/or its affiliates.  All rights reserved.
+* Copyright (c) 2016, 2025, Oracle and/or its affiliates.  All rights reserved.
 * License: The Universal Permissive License (UPL) Version 1.0, Apache License 2.0
 * Source code: https://github.com/oracle/oci-python-sdk
 * Project Home: https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/pythonsdk.htm

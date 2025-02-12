@@ -1,6 +1,6 @@
 # coding: utf-8
 
-# Copyright (c) 2024, Oracle and/or its affiliates.  All rights reserved.
+# Copyright (c) 2024, 2025, Oracle and/or its affiliates.  All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
 
 import os
@@ -10,10 +10,7 @@ NAME = "oci-ai-speech-realtime"
 __version__ = os.environ.get("PKG_VERSION", "0.0.1")
 VERSION = __version__.replace("-", "+", 1).replace("-", "", 1)
 
-requires = [
-    "oci>=2.144.1",
-    'websockets>=11.0.3'
-]
+requires = ["oci>=2.144.1", "websockets>=11.0.3"]
 
 setup(
     name=NAME,
@@ -30,7 +27,6 @@ setup(
     extras_require={"dev": ["pip-tools", "build", "twine"]},
     license="Universal Permissive License 1.0",
     license_files=["LICENSE.txt", "THIRD_PARTY_LICENSES.txt"],
-    
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
@@ -40,5 +36,5 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
-    ]
+    ],
 )
