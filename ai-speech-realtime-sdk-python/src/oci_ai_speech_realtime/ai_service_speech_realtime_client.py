@@ -26,7 +26,9 @@ import asyncio
 import abc
 
 import logging
+
 logger = logging.getLogger(__name__)
+
 
 class RealtimeSpeechClientListener(metaclass=abc.ABCMeta):
     @classmethod
@@ -71,7 +73,7 @@ class RealtimeSpeechClientListener(metaclass=abc.ABCMeta):
         pass
 
     def on_close(self, error_code: int, error_message: str):
-        #This is intended as a callback for you to do custom logging/resource cleanups, etc
+        # This is intended as a callback for you to do custom logging/resource cleanups, etc
         pass
 
 
@@ -97,12 +99,13 @@ class RealtimeSpeechClient:
             realtime_speech_parameters.partial_silence_threshold_in_ms = 0
             realtime_speech_parameters.is_ack_enabled = False
             realtime_speech_parameters.stabilize_partial_results = (
-                realtime_speech_parameters.STABILIZE_PARTIAL_RESULTS_NONE
+                RealtimeParameters.STABILIZE_PARTIAL_RESULTS_NONE
             )
             realtime_speech_parameters.language_code = "en-US"
             realtime_speech_parameters.model_domain = (
                 RealtimeParameters.MODEL_DOMAIN_GENERIC
             )
+            realtime_speech_parameters.punctuation = RealtimeParameters.PUNCTUATION_NONE
             realtime_speech_parameters.should_ignore_invalid_customizations = False
 
         self.realtime_speech_parameters = realtime_speech_parameters
@@ -127,7 +130,7 @@ class RealtimeSpeechClient:
 
     async def connect(self):
         logger.info(f"Connecting to: {self.uri}")
-        async with websockets.connect(self.uri, ping_interval = None) as ws:
+        async with websockets.connect(self.uri, ping_interval=None) as ws:
             self.connection = ws
             logger.info("Opened")
             self.listener.on_connect()
@@ -159,16 +162,19 @@ class RealtimeSpeechClient:
 
     async def request_final_result(self):
         if not self.connection is None:
-            request_message = {"event": RealtimeMessageSendFinalResult.EVENT_SEND_FINAL_RESULT}
-            await self.connection.send(json.dumps(request_message))
+            request_message = RealtimeMessageSendFinalResult()
+            logger.info(f"Requesting final result.")
+            await self.connection.send(str(request_message))
 
     def on_close(self, error_code, error_message):
-        logger.error(f"Connection with server closed, error code: {error_code} and reason: {error_message}")
-        #Allow the clients to implement their own closing logic (logging, resource cleanup, etc)
+        logger.error(
+            f"Connection with server closed, error code: {error_code} and reason: {error_message}"
+        )
+        # Allow the clients to implement their own closing logic (logging, resource cleanup, etc)
         self.listener.on_close(error_code, error_message)
         self.close_flag = True
         self.connection = None
-    
+
     async def _handle_messages(self, ws):
         while not self.close_flag:
             try:
@@ -202,13 +208,9 @@ class RealtimeSpeechClient:
                 + ("true" if params.is_ack_enabled is True else "false")
                 + "&"
             )
-        
+
         if params.encoding is not None:
-            parameterString += (
-                "encoding="
-                + params.encoding
-                + "&"
-            )
+            parameterString += "encoding=" + params.encoding + "&"
 
         if params.should_ignore_invalid_customizations is not None:
             parameterString += (
@@ -220,34 +222,46 @@ class RealtimeSpeechClient:
                 )
                 + "&"
             )
+
         if params.partial_silence_threshold_in_ms is not None:
             parameterString += (
                 "partialSilenceThresholdInMs="
                 + str(params.partial_silence_threshold_in_ms)
                 + "&"
             )
+
         if params.final_silence_threshold_in_ms is not None:
             parameterString += (
                 "finalSilenceThresholdInMs="
                 + str(params.final_silence_threshold_in_ms)
                 + "&"
             )
+
         if params.language_code is not None:
             parameterString += "languageCode=" + params.language_code + "&"
+
         if params.model_domain is not None:
             parameterString += "modelDomain=" + params.model_domain + "&"
+
         if params.stabilize_partial_results is not None:
             parameterString += (
                 "stabilizePartialResults=" + params.stabilize_partial_results + "&"
             )
+
+        if (
+            params.punctuation is not None
+            and params.punctuation is not RealtimeParameters.PUNCTUATION_NONE
+        ):
+            parameterString += "punctuation=" + params.punctuation + "&"
+
         if params.customizations is not None and len(params.customizations) > 0:
             parameterString += "customizations=" + quote(
                 json.dumps(params.customizations)
             )
-        # if params.freeform_tags is not None and len(params.freeform_tags) > 0:
-        #     parameterString += "freeFormTags=" + quote(json.dumps(params.freeform_tags))
+
         if parameterString[-1] == "&":
             parameterString = parameterString[:-1]
+
         return parameterString
 
     def _get_service_endpoint(self, config):

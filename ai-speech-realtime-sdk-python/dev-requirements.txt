@@ -1,5 +1,5 @@
 #This file is used only for local development
-oci>=2.130.0
+oci>=2.144.1
 websockets>=11.0.3
 
 pytest~=8.3.3
