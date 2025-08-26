@@ -33,10 +33,6 @@ BUFFER_DURATION_MS = 96
 # Calculate the number of frames per buffer
 FRAMES_PER_BUFFER = int(SAMPLE_RATE * BUFFER_DURATION_MS / 1000)
 
-# Set realtime/customization parameters
-
-DOMAIN = "GENERIC"  # Can also be "MEDICAL"
-LANGUAGE_CODE = "en-US"  # Choose according to your preference
 
 # Duration until which the session is active. To run forever, set this to -1
 SESSION_DURATION = 10
@@ -94,6 +90,7 @@ def get_realtime_parameters(customizations, compartment_id):
     realtime_speech_parameters: RealtimeParameters = RealtimeParameters()
     realtime_speech_parameters.language_code = "en-US"
     realtime_speech_parameters.model_domain = RealtimeParameters.MODEL_DOMAIN_GENERIC
+    realtime_speech_parameters.model_type = "ORACLE"
     realtime_speech_parameters.partial_silence_threshold_in_ms = 0
     realtime_speech_parameters.final_silence_threshold_in_ms = 2000
     realtime_speech_parameters.encoding = (

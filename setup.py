@@ -10,7 +10,7 @@ NAME = "oci-ai-speech-realtime"
 __version__ = os.environ.get("PKG_VERSION", "0.0.1")
 VERSION = __version__.replace("-", "+", 1).replace("-", "", 1)
 
-requires = ["oci>=2.144.1", "websockets>=11.0.3"]
+requires = ["oci>=2.159.0", "websockets>=11.0.3"]
 
 setup(
     name=NAME,

@@ -10,7 +10,6 @@ from oci.util import (
 )
 from oci.ai_speech.models import (
     RealtimeParameters,
-    CustomizationInference,
     RealtimeMessageAckAudio,
     RealtimeMessageResult,
     RealtimeMessageConnect,
@@ -93,7 +92,7 @@ class RealtimeSpeechClient:
 
         if realtime_speech_parameters is None:
             realtime_speech_parameters = RealtimeParameters()
-            realtime_speech_parameters.customizations: CustomizationInference = []
+            realtime_speech_parameters.customizations = []
             realtime_speech_parameters.encoding = "audio/raw;rate=16000"
             realtime_speech_parameters.final_silence_threshold_in_ms = 2000
             realtime_speech_parameters.partial_silence_threshold_in_ms = 0
@@ -105,6 +104,7 @@ class RealtimeSpeechClient:
             realtime_speech_parameters.model_domain = (
                 RealtimeParameters.MODEL_DOMAIN_GENERIC
             )
+            realtime_speech_parameters.model_type = "ORACLE"
             realtime_speech_parameters.punctuation = RealtimeParameters.PUNCTUATION_NONE
             realtime_speech_parameters.should_ignore_invalid_customizations = False
 
@@ -242,7 +242,11 @@ class RealtimeSpeechClient:
 
         if params.model_domain is not None:
             parameterString += "modelDomain=" + params.model_domain + "&"
-
+        if (
+            params.model_type is not None
+            and params.model_type != "ORACLE"
+        ):
+            parameterString += "modelType=" + params.model_type + "&"
         if params.stabilize_partial_results is not None:
             parameterString += (
                 "stabilizePartialResults=" + params.stabilize_partial_results + "&"
@@ -250,7 +254,7 @@ class RealtimeSpeechClient:
 
         if (
             params.punctuation is not None
-            and params.punctuation is not RealtimeParameters.PUNCTUATION_NONE
+            and params.punctuation != RealtimeParameters.PUNCTUATION_NONE
         ):
             parameterString += "punctuation=" + params.punctuation + "&"
 
