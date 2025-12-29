@@ -133,8 +133,8 @@ class RealtimeSpeechClient:
         async with websockets.connect(self.uri, ping_interval=None) as ws:
             self.connection = ws
             logger.info("Opened")
-            self.listener.on_connect()
             await self._send_credentials(ws)
+            self.listener.on_connect()
             await self._handle_messages(ws)
 
     async def _send_credentials(self, ws):
